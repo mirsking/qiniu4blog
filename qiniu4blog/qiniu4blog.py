@@ -4,9 +4,10 @@ from mimetypes import MimeTypes
 import sys
 #import win32clipboard
 import pyperclip
+from os.path import expanduser
 
 
-homedir = os.environ['HOME']
+homedir = expanduser("~")
 config = ConfigParser.RawConfigParser()
 config.read(homedir+'/qiniu.cfg')
 
