@@ -2,7 +2,9 @@ import os, time, sys ,ConfigParser
 import qiniu
 from mimetypes import MimeTypes
 import sys
-import win32clipboard
+#import win32clipboard
+import pyperclip
+
 
 homedir = os.environ['HOME']
 config = ConfigParser.RawConfigParser()
@@ -23,11 +25,14 @@ except ConfigParser.NoSectionError, err:
 
 
 def set_clipboard(url_list):
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    for url in url_list:
-        win32clipboard.SetClipboardText(url, win32clipboard.CF_TEXT)
-    win32clipboard.CloseClipboard()
+	for url in url_list:
+		pyperclip.copy(url)
+	spam = pyperclip.paste()
+    #win32clipboard.OpenClipboard()
+    #win32clipboard.EmptyClipboard()
+    #for url in url_list:
+     #   win32clipboard.SetClipboardText(url, win32clipboard.CF_TEXT)
+    #win32clipboard.CloseClipboard()
 
 
 def parseRet(retData, respInfo):
