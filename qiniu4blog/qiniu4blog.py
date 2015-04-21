@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os, time, sys ,ConfigParser,platform,urllib
 import qiniu
 from mimetypes import MimeTypes
@@ -12,6 +15,7 @@ config = ConfigParser.RawConfigParser()
 config.read(homedir+'/qiniu.cfg')
 
 def setCodeingByOS():
+    '''获取系统平台,设置编解码'''
     if 'cygwin' in platform.system().lower():
         CODE = 'GBK'
     elif os.name == 'nt' or platform.system() == 'Windows':
@@ -30,6 +34,12 @@ try:
     accessKey = config.get('config', 'accessKey')
     secretKey = config.get('config', 'secretKey')
     path_to_watch = config.get('config', 'path_to_watch')
+    enable = config.get('custom_url','enable')
+    if enable == 'false':
+        print 'custom_url not set'
+    else:
+        addr = config.get('custom_url','addr')
+
 
 except ConfigParser.NoSectionError, err:
     print 'Error Config File:', err
@@ -39,14 +49,11 @@ def set_clipboard(url_list):
 	for url in url_list:
 		pyperclip.copy(url)
 	spam = pyperclip.paste()
-    #win32clipboard.OpenClipboard()
-    #win32clipboard.EmptyClipboard()
-    #for url in url_list:
-     #   win32clipboard.SetClipboardText(url, win32clipboard.CF_TEXT)
-    #win32clipboard.CloseClipboard()
+
 
 
 def parseRet(retData, respInfo):
+    '''处理上传结果'''
     if retData != None:
         print("Upload file success!")
         print("Hash: " + retData["hash"])
@@ -65,6 +72,7 @@ def parseRet(retData, respInfo):
 
 
 def upload_without_key(bucket, filePath, uploadname):
+    '''上传文件'''
     auth = qiniu.Auth(accessKey, secretKey)
     upToken = auth.upload_token(bucket, key=None)
     key = uploadname
@@ -85,7 +93,10 @@ def main():
             url_list = []
             for i in added:
                 upload_without_key(bucket, os.path.join(path_to_watch, i), i.decode(setCodeingByOS()))
-                url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
+                if addr:
+                    url = addr + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
+                else:
+                    url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
                 url_list.append(url)
 
             with open('image_markdown.txt', 'a') as f:
