@@ -5,7 +5,6 @@ import os, time, sys ,ConfigParser,platform,urllib
 import qiniu
 from mimetypes import MimeTypes
 import sys
-#import win32clipboard
 import pyperclip
 from os.path import expanduser
 
@@ -13,21 +12,9 @@ from os.path import expanduser
 homedir = expanduser("~")
 config = ConfigParser.RawConfigParser()
 config.read(homedir+'/qiniu.cfg')
-
-def setCodeingByOS():
-    '''获取系统平台,设置编解码'''
-    if 'cygwin' in platform.system().lower():
-        CODE = 'GBK'
-    elif os.name == 'nt' or platform.system() == 'Windows':
-        CODE = 'GBK'
-    elif os.name == 'mac' or platform.system() == 'Darwin':
-        CODE = 'utf-8'
-    elif os.name == 'posix' or platform.system() == 'Linux':
-        CODE = 'utf-8'
-    return  CODE
-
-
 mime = MimeTypes()
+
+
 
 try:
     bucket = config.get('config', 'bucket')
@@ -44,6 +31,17 @@ try:
 except ConfigParser.NoSectionError, err:
     print 'Error Config File:', err
 
+def setCodeingByOS():
+    '''获取系统平台,设置编解码'''
+    if 'cygwin' in platform.system().lower():
+        CODE = 'GBK'
+    elif os.name == 'nt' or platform.system() == 'Windows':
+        CODE = 'GBK'
+    elif os.name == 'mac' or platform.system() == 'Darwin':
+        CODE = 'utf-8'
+    elif os.name == 'posix' or platform.system() == 'Linux':
+        CODE = 'utf-8'
+    return  CODE
 
 def set_clipboard(url_list):
 	for url in url_list:
@@ -113,8 +111,5 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-
-
 
 
