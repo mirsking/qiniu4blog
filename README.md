@@ -1,6 +1,6 @@
 #打造自己的图床(qiniu)
 
-![](images/result.gif)
+![](http://voyager91.qiniudn.com/2.gif)
 
 ###流程
 
