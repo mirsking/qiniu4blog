@@ -1,9 +1,9 @@
 #encoding:utf-8
 from setuptools import setup, find_packages
 import sys, os
- 
-version = '0.0.3'
- 
+
+version = '0.0.4'
+
 setup(name='qiniu4blog',
       version=version,
       description="写博客用的七牛图传",
@@ -23,7 +23,7 @@ setup(name='qiniu4blog',
       ],
       entry_points={
         'console_scripts':[
-            'qiniu4blog = qiniu4blog.qiniu4blog:main'   
+            'qiniu4blog = qiniu4blog.qiniu4blog:main'
         ]
       },
 )

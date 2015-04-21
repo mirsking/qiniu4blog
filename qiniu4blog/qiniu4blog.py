@@ -1,4 +1,4 @@
-import os, time, sys ,ConfigParser
+import os, time, sys ,ConfigParser,platform,urllib
 import qiniu
 from mimetypes import MimeTypes
 import sys
@@ -11,6 +11,16 @@ homedir = expanduser("~")
 config = ConfigParser.RawConfigParser()
 config.read(homedir+'/qiniu.cfg')
 
+def setCodeingByOS():
+    if 'cygwin' in platform.system().lower():
+        CODE = 'GBK'
+    elif os.name == 'nt' or platform.system() == 'Windows':
+        CODE = 'GBK'
+    elif os.name == 'mac' or platform.system() == 'Darwin':
+        CODE = 'utf-8'
+    elif os.name == 'posix' or platform.system() == 'Linux':
+        CODE = 'utf-8'
+    return  CODE
 
 
 mime = MimeTypes()
@@ -20,7 +30,7 @@ try:
     accessKey = config.get('config', 'accessKey')
     secretKey = config.get('config', 'secretKey')
     path_to_watch = config.get('config', 'path_to_watch')
-	
+
 except ConfigParser.NoSectionError, err:
     print 'Error Config File:', err
 
@@ -74,8 +84,8 @@ def main():
             # print added
             url_list = []
             for i in added:
-                upload_without_key(bucket, os.path.join(path_to_watch, i), i)
-                url = 'http://' + bucket + '.qiniudn.com/' + i
+                upload_without_key(bucket, os.path.join(path_to_watch, i), i.decode(setCodeingByOS()))
+                url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
                 url_list.append(url)
 
             with open('image_markdown.txt', 'a') as f:
@@ -89,10 +99,10 @@ def main():
             print "Removed Files: ", ", ".join(removed)
             print  removed
         before = after
-	
+
 if __name__ == "__main__":
 	main()
-    
+
 
 
 

@@ -1,4 +1,4 @@
-import os, time, sys
+import os, time, sys ,platform,urllib
 import qiniu
 from mimetypes import MimeTypes
 import sys
@@ -10,6 +10,16 @@ accessKey = "qzACg****"
 secretKey = "P5GUU****"
 path_to_watch = 'D:\install\qiniu\uploadimage2qiniu'
 
+def setCodeingByOS():
+    if 'cygwin' in platform.system().lower():
+        CODE = 'GBK'
+    elif os.name == 'nt' or platform.system() == 'Windows':
+        CODE = 'GBK'
+    elif os.name == 'mac' or platform.system() == 'Darwin':
+        CODE = 'utf-8'
+    elif os.name == 'posix' or platform.system() == 'Linux':
+        CODE = 'utf-8'
+    return  CODE
 
 def set_clipboard(url_list):
     win32clipboard.OpenClipboard()
@@ -59,8 +69,8 @@ if __name__ == "__main__":
             # print added
             url_list = []
             for i in added:
-                upload_without_key(bucket, os.path.join(path_to_watch, i), i)
-                url = 'http://' + bucket + '.qiniudn.com/' + i
+                upload_without_key(bucket, os.path.join(path_to_watch, i), i.decode(setCodeingByOS()))
+                url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
                 url_list.append(url)
 
             with open('image_markdown.txt', 'a') as f:
