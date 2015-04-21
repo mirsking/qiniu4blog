@@ -1,6 +1,7 @@
 #打造自己的图床(qiniu)
 
 ![](http://voyager91.qiniudn.com/2.gif)
+![](http://7qnct6.com1.z0.glb.clouddn.com/Screenshot%202015-04-21%2022.39.38.jpg)
 
 #UPDATE
 
