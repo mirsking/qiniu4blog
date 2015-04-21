@@ -12,7 +12,7 @@
 ##安装步骤
 pip install qiniu4blog
 
-> win8 下 python2.7.9 下验证通过,其它版本还未测试
+> windows ,Mac os 下 python2.7.9 下验证通过,其它版本还未测试
 > 或使用单独的脚本`watchdog.py` ---> `old目录下`
 
 ##配置
