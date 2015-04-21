@@ -2,6 +2,13 @@
 
 ![](http://voyager91.qiniudn.com/2.gif)
 
+#UPDATE
+
+##2015-04-21:
+
+* 支持中文
+* 支持自定义 URL
+
 ###流程
 
 > python 监控文件夹 --> 文件新增(FS capture 截图自动保存该目录)
@@ -32,6 +39,10 @@ bucket = your-bucket-name
 accessKey = qzA***********************sa
 secretKey = P5G***********************wq
 path_to_watch = D:\install\qiniu\uploadimage2qiniu
+
+[custom_url]
+enable = false 或者 true
+addr = http://7qnct6.com1.z0.glb.clouddn.com/
 
 ```
 
