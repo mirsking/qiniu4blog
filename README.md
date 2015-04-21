@@ -13,24 +13,24 @@
 pip install qiniu4blog
 
 > windows ,Mac os 下 python2.7.9 下验证通过,其它版本还未测试
-> 或使用单独的脚本`watchdog.py` ---> `old目录下`
+
 
 ##配置
 
 登录[https://portal.qiniu.com/](https://portal.qiniu.com/)
-新建一个**bucket**,获取以下相关信息
+新建一个**bucket**,获取以下相关信息`bucket` , `accessKey` ,`secretKey`, 
 
 ![](http://voyager91.qiniudn.com/2015-04-16_00001.jpg)
 
 
 在home目录下新建配置文件`qiniu.cfg` 例如`C:\Users\leeyoung\qiniu.cfg`
-
+`path_to_watch` 为截图自动保存的目录
 `qiniu.cfg`内容如下
 ```
 [config]
-bucket = voyager91
-accessKey = qzA***********************
-secretKey = P5G***********************
+bucket = your-bucket-name
+accessKey = qzA***********************sa
+secretKey = P5G***********************wq
 path_to_watch = D:\install\qiniu\uploadimage2qiniu
 
 ```
