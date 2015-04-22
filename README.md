@@ -60,10 +60,6 @@ killall SystemUIServer
 ```
 qiniu4blog
 ```
-![](http://voyager91.qiniudn.com/2015-04-17_00003.jpg)
-
-![http://voyager91.qiniudn.com/2015-04-03_00005.jpg](http://voyager91.qiniudn.com/2015-04-03_00005.jpg)
-
 
 ##相关下载
 * [FastStone Capture.rar](http://pan.baidu.com/s/1o6mjrmi)
