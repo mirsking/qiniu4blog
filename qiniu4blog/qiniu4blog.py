@@ -91,7 +91,7 @@ def main():
             url_list = []
             for i in added:
                 upload_without_key(bucket, os.path.join(path_to_watch, i), i.decode(setCodeingByOS()))
-                if addr:
+                if enable == 'true':
                     url = addr + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
                 else:
                     url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
