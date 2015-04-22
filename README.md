@@ -1,7 +1,12 @@
 #打造自己的图床(qiniu)
 
 ![](http://voyager91.qiniudn.com/2.gif)
+
+*修复中文文件名*
 ![](http://7qnct6.com1.z0.glb.clouddn.com/Screenshot%202015-04-21%2022.39.38.jpg)
+
+*增加自定义url  在`custom_url`里设置*
+![](http://voyager91.qiniudn.com/2015-04-22_%E4%B8%AD%E6%96%8700008.jpg)
 
 #UPDATE
 
