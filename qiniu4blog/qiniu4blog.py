@@ -77,12 +77,24 @@ def upload_without_key(bucket, filePath, uploadname):
     retData, respInfo = qiniu.put_file(upToken, key, filePath, mime_type=mime.guess_type(filePath)[0])
     parseRet(retData, respInfo)
 
+import os
+
+def get_filepaths(directory):
+    file_paths = []  # List which will store all of the full filepaths.
+    for root, directories, files in os.walk(directory):
+        for filename in files:
+            # Join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)  # Add it to the list.
+    return file_paths  # Self-explanatory.
+
+	
 def main():
     print "running ... ..."
-    before = dict([(f, None) for f in os.listdir(path_to_watch)])
+    before =  get_filepaths(path_to_watch)   
     while 1:
         time.sleep(1)
-        after = dict([(f, None) for f in os.listdir(path_to_watch)])
+        after = get_filepaths(path_to_watch)  
         added = [f for f in after if not f in before]
         removed = [f for f in before if not f in after]
         if added:
@@ -90,11 +102,12 @@ def main():
             # print added
             url_list = []
             for i in added:
-                upload_without_key(bucket, os.path.join(path_to_watch, i), i.decode(setCodeingByOS()))
+                fileName = os.path.basename(i)
+                upload_without_key(bucket, i, fileName.decode(setCodeingByOS()))
                 if enable == 'true':
-                    url = addr + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
+                    url = addr + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
                 else:
-                    url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(i.decode(setCodeingByOS()).encode('utf-8'))
+                    url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
                 url_list.append(url)
 
             with open('image_markdown.txt', 'a') as f:
