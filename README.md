@@ -10,7 +10,8 @@
 
 #UPDATE
 
-##2015-07-02:
+##2015-07-03:
+* 保持目录结构,比如 根目录`/day01/image1.jpg` 上传后为 `http://voyager91.qiniudn.com/day01/image1.jpg`
 * 支持子目录文件同步
 * 支持中文
 * 支持自定义 URL
