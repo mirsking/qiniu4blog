@@ -86,7 +86,6 @@ def get_filepaths(directory):
             # Join the two strings in order to form the full filepath.
             filepath = os.path.join(root, filename)
             file_paths.append(filepath)  # Add it to the list.
-            #file_paths.append(filename)
     return file_paths  # Self-explanatory.
 
 
@@ -103,7 +102,10 @@ def main():
             # print added
             url_list = []
             for i in added:
-                fileName = "".join(i.rsplit(path_to_watch))[1:]  #os.path.basename(i)
+                if platform.system() == 'Windows':
+                    fileName = "/".join("".join(i.rsplit(path_to_watch))[1:].split("\\"))
+                else:
+                    fileName = "".join(i.rsplit(path_to_watch))[1:]
                 upload_without_key(bucket, i, fileName.decode(setCodeingByOS()))
                 if enable == 'true':
                     url = addr + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
