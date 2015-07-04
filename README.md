@@ -1,12 +1,7 @@
 #打造自己的图床(qiniu)
-
+#软件介绍
 ![](http://voyager91.qiniudn.com/2.gif)
 
-*修复中文文件名*
-![](http://7qnct6.com1.z0.glb.clouddn.com/Screenshot%202015-04-21%2022.39.38.jpg)
-
-*增加自定义url  在`custom_url`里设置*
-![](http://voyager91.qiniudn.com/2015-04-22_%E4%B8%AD%E6%96%8700008.jpg)
 
 #UPDATE
 
@@ -21,8 +16,6 @@
 > python 监控文件夹 --> 文件新增(FS capture 截图自动保存该目录)
 --> 使用 qiniu sdk 上传到 qiniu 云存储 --> 生成外链到粘贴板 --> 复制图片外链到博客
 
-
-
 ##安装步骤
 pip install qiniu4blog
 
@@ -35,6 +28,9 @@ pip install qiniu4blog
 新建一个**bucket**,获取以下相关信息`bucket` , `accessKey` ,`secretKey`, 
 
 ![](http://voyager91.qiniudn.com/2015-04-16_00001.jpg)
+
+*增加自定义url  在`custom_url`里设置*
+![](http://voyager91.qiniudn.com/2015-04-22_%E4%B8%AD%E6%96%8700008.jpg)
 
 
 在home目录下新建配置文件`qiniu.cfg` 例如`C:\Users\leeyoung\qiniu.cfg`
