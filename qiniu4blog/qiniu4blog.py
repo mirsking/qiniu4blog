@@ -9,30 +9,26 @@ import pyperclip
 from os.path import expanduser
 
 
-homedir = expanduser("~")
-config = ConfigParser.RawConfigParser()
+homedir = expanduser("~")                           #get home dir path
+config = ConfigParser.RawConfigParser()             #read config
 config.read(homedir+'/qiniu.cfg')
 mime = MimeTypes()
 
-
-
 try:
-    bucket = config.get('config', 'bucket')
-    accessKey = config.get('config', 'accessKey')
-    secretKey = config.get('config', 'secretKey')
-    path_to_watch = config.get('config', 'path_to_watch')
-    enable = config.get('custom_url','enable')
+    bucket = config.get('config', 'bucket')         #set  bucket
+    accessKey = config.get('config', 'accessKey')   #set  accessKey
+    secretKey = config.get('config', 'secretKey')   #set  secretKey
+    path_to_watch = config.get('config', 'path_to_watch')   #set image root dir
+    enable = config.get('custom_url','enable')        #set custom_url
     if enable == 'false':
         print 'custom_url not set'
     else:
         addr = config.get('custom_url','addr')
-
-
 except ConfigParser.NoSectionError, err:
     print 'Error Config File:', err
 
+#set character coding
 def setCodeingByOS():
-    '''获取系统平台,设置编解码'''
     if 'cygwin' in platform.system().lower():
         CODE = 'GBK'
     elif os.name == 'nt' or platform.system() == 'Windows':
@@ -43,15 +39,15 @@ def setCodeingByOS():
         CODE = 'utf-8'
     return  CODE
 
+#set clipboard
 def set_clipboard(url_list):
 	for url in url_list:
 		pyperclip.copy(url)
 	spam = pyperclip.paste()
 
 
-
+#print response from qiniu server
 def parseRet(retData, respInfo):
-    '''处理上传结果'''
     if retData != None:
         print("Upload file success!")
         print("Hash: " + retData["hash"])
@@ -68,17 +64,42 @@ def parseRet(retData, respInfo):
         print("Upload file failed!")
         print("Error: " + respInfo.text_body)
 
-
+#upload file style1
 def upload_without_key(bucket, filePath, uploadname):
-    '''上传文件'''
     auth = qiniu.Auth(accessKey, secretKey)
     upToken = auth.upload_token(bucket, key=None)
     key = uploadname
     retData, respInfo = qiniu.put_file(upToken, key, filePath, mime_type=mime.guess_type(filePath)[0])
     parseRet(retData, respInfo)
 
-import os
+#upload file style2
+def upload_with_full_Path(filePath):
+    if platform.system() == 'Windows':
+        fileName = "/".join("".join(filePath.rsplit(path_to_watch))[1:].split("\\"))
+    else:
+        fileName = "".join(filePath.rsplit(path_to_watch))[1:]
+    upload_without_key(bucket, filePath, fileName.decode(setCodeingByOS()))
+    if enable == 'true':
+        url = addr + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
+    else:
+        url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
+    return url
 
+#upload file style3	
+def upload_with_full_Path_cmd(filePath):
+    if platform.system() == 'Windows':
+        filePath = "/".join((filePath.split("\\")))
+        fileName = os.path.basename(filePath)
+    else:
+        fileName = os.path.basename(filePath)
+    upload_without_key(bucket, filePath, fileName.decode(setCodeingByOS()))
+    if enable == 'true':
+        url = addr + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
+    else:
+        url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
+    return url
+
+#get all file path on root image dir 
 def get_filepaths(directory):
     file_paths = []  # List which will store all of the full filepaths.
     for root, directories, files in os.walk(directory):
@@ -87,10 +108,9 @@ def get_filepaths(directory):
             filepath = os.path.join(root, filename)
             file_paths.append(filepath)  # Add it to the list.
     return file_paths  # Self-explanatory.
-
-
+	
 def main():
-    print "running ... ..."
+    print "running ... ... \nPress Ctr+C to Stop"
     before =  get_filepaths(path_to_watch)
     while 1:
         time.sleep(1)
@@ -99,26 +119,16 @@ def main():
         removed = [f for f in before if not f in after]
         if added:
             print "Added Files: ", ", ".join(added)
-            # print added
             url_list = []
             for i in added:
-                if platform.system() == 'Windows':
-                    fileName = "/".join("".join(i.rsplit(path_to_watch))[1:].split("\\"))
-                else:
-                    fileName = "".join(i.rsplit(path_to_watch))[1:]
-                upload_without_key(bucket, i, fileName.decode(setCodeingByOS()))
-                if enable == 'true':
-                    url = addr + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
-                else:
-                    url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
+                url = upload_with_full_Path(i)
                 url_list.append(url)
-
             with open('image_markdown.txt', 'a') as f:
                 for url in url_list:
                     image = '![' + url + ']' + '(' + url + ')' + '\n'
+                    print url,'\n'
                     f.write(image)
-            print "image url [markdown] is save in image_markdwon.txt"
-
+            print "\nNOTE: save image url [markdown] in image_markdwon.txt"
             set_clipboard(url_list)
         if removed:
             print "Removed Files: ", ", ".join(removed)
@@ -126,6 +136,20 @@ def main():
         before = after
 
 if __name__ == "__main__":
-	main()
+    if len(sys.argv) == 1:
+	    main()
+    else:
+        url_list = []
+        for i in sys.argv[1:]:
+            url = upload_with_full_Path_cmd(i)
+            url_list.append(url)
+        with open('image_markdown.txt', 'a') as f:
+            for url in url_list:
+                image = '![' + url + ']' + '(' + url + ')' + '\n'
+                print url,'\n'
+                f.write(image)
+        print "\nNOTE: save image url [markdown] in image_markdwon.txt"
+        set_clipboard(url_list)
+            
 
 
