@@ -110,6 +110,19 @@ def get_filepaths(directory):
     return file_paths  # Self-explanatory.
 	
 def main():
+    if len(sys.argv) > 1:
+        url_list = []
+        for i in sys.argv[1:]:
+            url = upload_with_full_Path_cmd(i)
+            url_list.append(url)
+        with open('image_markdown.txt', 'a') as f:
+            for url in url_list:
+                image = '![' + url + ']' + '(' + url + ')' + '\n'
+                print url,'\n'
+                f.write(image)
+        print "\nNOTE: save image url [markdown] in image_markdwon.txt"
+        set_clipboard(url_list)
+        return
     print "running ... ... \nPress Ctr+C to Stop"
     before =  get_filepaths(path_to_watch)
     while 1:
@@ -136,20 +149,8 @@ def main():
         before = after
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-	    main()
-    else:
-        url_list = []
-        for i in sys.argv[1:]:
-            url = upload_with_full_Path_cmd(i)
-            url_list.append(url)
-        with open('image_markdown.txt', 'a') as f:
-            for url in url_list:
-                image = '![' + url + ']' + '(' + url + ')' + '\n'
-                print url,'\n'
-                f.write(image)
-        print "\nNOTE: save image url [markdown] in image_markdwon.txt"
-        set_clipboard(url_list)
+    main()
+   
             
 
 

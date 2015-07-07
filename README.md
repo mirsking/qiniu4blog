@@ -4,6 +4,9 @@
 
 
 #UPDATE
+##2015-07-07:
+* 支持`qiniu4blog d:/image1.jpg d:/image2.jpg d:/image3.jpg`上传图片
+![](http://7qnct6.com1.z0.glb.clouddn.com/2015-07-07_07.jpg)
 
 ##2015-07-03:
 * 保持目录结构,比如 根目录`/day01/image1.jpg` 上传后为 `http://voyager91.qiniudn.com/day01/image1.jpg`
