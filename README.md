@@ -60,10 +60,15 @@ killall SystemUIServer
 ```
 
 ##运行
- 
+
+###监听模式
 打开终端或cmd
 ```
-qiniu4blog
+qiniu4blog  #将会监听path_to_watch内的文件变动，上传图片
+```
+###命令行模式
+```
+qiniu4blog d:/image1.jpg d:/image2.jpg d:/image3.jpg  #指定上传多个文件
 ```
 
 ##相关下载
