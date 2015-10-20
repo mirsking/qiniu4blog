@@ -1,6 +1,7 @@
 #打造自己的图床(qiniu)
 #软件介绍
-![](http://voyager91.qiniudn.com/2.gif)
+[![ScreenShot](http://7qnct6.com1.z0.glb.clouddn.com/Screenshot%202015-10-20%2022.54.24.jpg)](https://www.youtube.com/watch?v=QxlIlrj7lVg&feature=youtu.be)
+
 
 
 #UPDATE
