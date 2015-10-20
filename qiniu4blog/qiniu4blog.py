@@ -7,12 +7,36 @@ from mimetypes import MimeTypes
 import sys
 import pyperclip
 from os.path import expanduser
+import signal
+import time
+import sys
 
 
 homedir = expanduser("~")                           #get home dir path
 config = ConfigParser.RawConfigParser()             #read config
 config.read(homedir+'/qiniu.cfg')
 mime = MimeTypes()
+
+def exit_gracefully(signum, frame):
+    # restore the original signal handler as otherwise evil things will happen
+    # in raw_input when CTRL+C is pressed, and our signal handler is not re-entrant
+    signal.signal(signal.SIGINT, original_sigint)
+
+    try:
+        if raw_input("\nReally quit? (y/n)> ").lower().startswith('y'):
+            sys.exit(1)
+
+    except KeyboardInterrupt:
+        print("Ok ok, quitting")
+        sys.exit(1)
+
+    # restore the exit gracefully handler here
+    signal.signal(signal.SIGINT, exit_gracefully)
+
+
+original_sigint = signal.getsignal(signal.SIGINT)
+signal.signal(signal.SIGINT, exit_gracefully)
+
 
 try:
     bucket = config.get('config', 'bucket')         #set  bucket
@@ -85,7 +109,7 @@ def upload_with_full_Path(filePath):
         url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
     return url
 
-#upload file style3	
+#upload file style3
 def upload_with_full_Path_cmd(filePath):
     if platform.system() == 'Windows':
         filePath = "/".join((filePath.split("\\")))
@@ -99,7 +123,7 @@ def upload_with_full_Path_cmd(filePath):
         url = 'http://' + bucket + '.qiniudn.com/' + urllib.quote(fileName.decode(setCodeingByOS()).encode('utf-8'))
     return url
 
-#get all file path on root image dir 
+#get all file path on root image dir
 def get_filepaths(directory):
     file_paths = []  # List which will store all of the full filepaths.
     for root, directories, files in os.walk(directory):
@@ -108,7 +132,10 @@ def get_filepaths(directory):
             filepath = os.path.join(root, filename)
             file_paths.append(filepath)  # Add it to the list.
     return file_paths  # Self-explanatory.
-	
+
+
+
+
 def main():
     if len(sys.argv) > 1:
         url_list = []
@@ -148,9 +175,9 @@ def main():
             print  removed
         before = after
 
+
+
 if __name__ == "__main__":
     main()
-   
-            
 
 
