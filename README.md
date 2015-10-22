@@ -1,3 +1,5 @@
+![](https://img.shields.io/badge/python-2.7.9-blue.svg)
+
 #打造自己的图床(qiniu)
 #软件介绍
 ![](http://voyager91.qiniudn.com/2.gif)
