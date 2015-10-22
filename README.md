@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/python-2.7.9-blue.svg)
+[![](https://img.shields.io/badge/python-2.7.9-blue.svg)](https://pypi.python.org/pypi/qiniu4blog)
 
 #打造自己的图床(qiniu)
 #软件介绍
