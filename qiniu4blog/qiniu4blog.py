@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, time, sys ,ConfigParser,platform,urllib
+import os, time, sys, ConfigParser,platform,urllib
 import qiniu
 from mimetypes import MimeTypes
-import sys
 import pyperclip
 from os.path import expanduser
 import signal
-import time
-import sys
 
 
 homedir = expanduser("~")                           #get home dir path
@@ -18,10 +15,7 @@ config.read(homedir+'/qiniu.cfg')
 mime = MimeTypes()
 
 def exit_gracefully(signum, frame):
-    # restore the original signal handler as otherwise evil things will happen
-    # in raw_input when CTRL+C is pressed, and our signal handler is not re-entrant
     signal.signal(signal.SIGINT, original_sigint)
-
     try:
         if raw_input("\nReally quit? (y/n)> ").lower().startswith('y'):
             sys.exit(1)
@@ -32,7 +26,6 @@ def exit_gracefully(signum, frame):
 
     # restore the exit gracefully handler here
     signal.signal(signal.SIGINT, exit_gracefully)
-
 
 original_sigint = signal.getsignal(signal.SIGINT)
 signal.signal(signal.SIGINT, exit_gracefully)
@@ -165,8 +158,8 @@ def main():
                 url_list.append(url)
             with open('image_markdown.txt', 'a') as f:
                 for url in url_list:
-                    image = '![' + url + ']' + '(' + url + ')' + '\n'
-                    print url,'\n'
+                    image = '![' + url + ']' + '(' + url + ')' + '\n\n'
+                    print url,'\n\n'
                     f.write(image)
             print "\nNOTE: save image url [markdown] in image_markdwon.txt"
             set_clipboard(url_list)
