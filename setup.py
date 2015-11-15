@@ -2,13 +2,13 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.2.2'
+version = '1.3.0'
 
 setup(name='qiniu4blog',
       version=version,
-      description="写博客用的七牛图传",
-      long_description="""写博客用的七牛图传""",
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      description="写博客用的七牛图床",
+      long_description="""写博客用的七牛图床""",
+      classifiers=[],
       keywords='python qiniu',
       author='wzyuliyang',
       author_email='wzyuliyang911@gmail.com',
@@ -20,6 +20,7 @@ setup(name='qiniu4blog',
       install_requires=[
         'qiniu',
 		'pyperclip',
+    'watchdog',
       ],
       entry_points={
         'console_scripts':[
