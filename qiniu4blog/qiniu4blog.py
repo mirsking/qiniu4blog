@@ -6,6 +6,13 @@ from os.path import expanduser
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
+def GetFileNameFromUrl(url):
+    return url.split('/')[-1].split('.')[0]
+
+def BuildImageMardownStyleCode(url):
+    filename = GetFileNameFromUrl(url)
+    image = '![' + filename + ']' + '(' + url + ')' + '\n'
+    return image
 
 # 使用watchdog 监控文件夹中的图像
 class MyHandler(PatternMatchingEventHandler):
@@ -43,7 +50,7 @@ def job(file, mode):
     pyperclip.paste()
     print url
     with open('MARKDOWN_FORMAT_URLS.txt', 'a') as f:
-        image = '![' + url + ']' + '(' + url + ')' + '\n'
+        image = BuildImageMardownStyleCode(url)
         f.write(image + '\n')
 
 #-----------------配置--------------------
@@ -163,13 +170,15 @@ def window_main():
         url_list = []
         for i in sys.argv[1:]:
             url_list.append(upload_with_full_Path_cmd(i))
+        image_list = []
         with open('MARKDOWN_FORMAT_URLS.txt', 'a') as f:
             for url in url_list:
-                image = '![' + url + ']' + '(' + url + ')' + '\n'
+                image = BuildImageMardownStyleCode(url)
+                image_list.append(image)
                 print url, '\n'
                 f.write(image)
         print "\nNOTE: THE MARKDOWN FORMAT URLS ALREADY SAVED IN MARKDOWN_FORMAT_URLS.txt FILE"
-        set_clipboard(url_list)
+        set_clipboard(image_list)
         sys.exit(-1)
     print "running ... ... \nPress Ctr+C to Stop"
     before = get_filepaths(path_to_watch)
@@ -182,13 +191,15 @@ def window_main():
             url_list = []
             for i in added:
                 url_list.append(upload_with_full_Path(i))
+            image_list = []
             with open('MARKDOWN_FORMAT_URLS.txt', 'a') as f:
                 for url in url_list:
-                    image = '![' + url + ']' + '(' + url + ')' + '\n'
+                    image = BuildImageMardownStyleCode(url)
+                    image_list.append(image)
                     print url, '\n'
                     f.write(image)
             print "\nNOTE: THE MARKDOWN FORMAT URLS ALREADY SAVED IN MARKDOWN_FORMAT_URLS.txt FILE"
-            set_clipboard(url_list)
+            set_clipboard(image_list)
         if removed:
             pass
         before = after
